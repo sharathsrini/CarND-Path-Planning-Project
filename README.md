@@ -1,6 +1,10 @@
 # CarND-Path-Planning-Project
 Self-Driving Car Engineer Nanodegree Program
-   
+ 
+./car-path-planning.png
+
+
+
 ### Simulator.
 You can download the Term3 Simulator which contains the Path Planning Project from the [releases tab (https://github.com/udacity/self-driving-car-sim/releases/tag/T3_v1.2).
 
@@ -137,6 +141,9 @@ still be compilable with cmake and make./
 
 #  My take on the CarND-Path-Planning
 
+
+./Shem.jpg
+
 ## Path Planning Project
 The goal of this project is to drive a car around a simulated highway including traffic. In all previous projects we just used to drive only our car around the track, but this was a bit different. The simulator tries to inact the actual highway situation and we just need to write our code in such a way that car drives better than we drive!!! As always there are a number of constraints-:
 
@@ -174,6 +181,8 @@ The simulator sends a number of messages like the Car's location, velocity, yaw 
 The data from the sensor fusion and simulator is used to generate the estimate i.e. predict  what the other vehicles are likely to do. The sensor fusion data that gives us the data about the other cars nearby and we will have to predict what they are likely to do. We will change our behaviour on the basis of the Prediction of other cars behaviour
 
 ### Behaviour Planning 
+
+./car-parking.png
 
 
 For behaviour planning the algorithm-:
