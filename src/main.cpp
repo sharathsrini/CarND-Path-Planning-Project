@@ -277,57 +277,57 @@ double ref_vel = 0;// Intialize the reference veloccity.
 if(previous_size >2){
 	car_s = last_path_s;
 }
-bool too_close = false;
+bool close_proximity = false; // Check for  closeness to the other car
 
-too_close = CheckforCarProximity(sensor_fusion, lane, car_s, previous_size, false);
+close_proximity = CheckforCarProximity(sensor_fusion, lane, car_s, previous_size, false);
 
-if(too_close)
+if(close_proximity)
 {
 	cout<<"Car is too close"<<endl;
-	int left_lane = lane - 1;
-	int right_lane = lane + 1;
+	int left_lane = lane - 1; //Variable for Left Lane
+	int right_lane = lane + 1; //Variable for Right Lane
 	if(left_lane >=0)
 	{
 		cout<<"left lane is"<<left_lane<<endl;
-		bool too_close_left = CheckforCarProximity(sensor_fusion, left_lane, car_s, previous_size,true);
-		if(too_close_left)
+		bool close_proximity_left = CheckforCarProximity(sensor_fusion, left_lane, car_s, previous_size,true);
+		if(close_proximity_left)
 		{
 			cout<<"Left Car is too close"<<left_lane<<endl;
 			if(right_lane <= 2)
 			{
-				bool too_close_right = CheckforCarProximity(sensor_fusion, right_lane, car_s, previous_size, true);
-				if(too_close_right)
+				bool close_proximity_right = CheckforCarProximity(sensor_fusion, right_lane, car_s, previous_size, true);
+				if(close_proximity_right)
 				{
 					// keep lane
 				}
 				else
 				{
-					lane = right_lane;
+					lane = right_lane; // Change the Lane
 				}
 			}
 			else
 			{
-				bool too_close_left1 = CheckforCarProximity(sensor_fusion, left_lane, car_s, previous_size,true);
-				if(too_close_left1)
+				bool close_proximity_left1 = CheckforCarProximity(sensor_fusion, left_lane, car_s, previous_size,true);
+				if(close_proximity_left1)
 				{
 					//keep lane
 				}
 				else
 				{
-					lane= left_lane;
+					lane= left_lane; // Change the Lane
 				}
 			}
 		}
 		else
 		{
-			lane= left_lane;
+			lane= left_lane; // Keep to the Left Lane
 		}
 	}
 	else
 	{
-		cout<<"Trying Right lane as left lane is not possible"<<endl;
-				bool too_close_right = CheckforCarProximity(sensor_fusion, right_lane, car_s, previous_size, true);
-				if(too_close_right)
+		cout<<"Changing to  Right lane , Coz Left lane is not occupied"<<endl;
+				bool close_proximity_right = CheckforCarProximity(sensor_fusion, right_lane, car_s, previous_size, true);
+				if(close_proximity_right)
 				{
 					// keep lane
 				}
@@ -338,7 +338,7 @@ if(too_close)
 		
 	}
 
-	ref_vel -= .224;
+	ref_vel -= .224; // Reference Velocity.
 }
 else if(ref_vel <49.5)
 {
@@ -346,46 +346,46 @@ else if(ref_vel <49.5)
 }
 
 
-			vector<double> ptsx;
-			vector<double> ptsy;
-			double ref_x = car_x;
-			double ref_y = car_y;
-			double ref_yaw = deg2rad(car_yaw);
+			vector<double> pts_x; //X points
+			vector<double> pts_y; // Y Points
+			double reference_x = car_x; // Reference X points
+			double reference_y = car_y; // Reference Y Points
+			double reference_yaw = deg2rad(car_yaw); // Reference Yaw 
 
 
-					// for spline 5 points are required
-					// one is the previous point
-					// one is current point
-					// three are future points
+					// For creatuing a spline we require 5 oer more  points.
+					// One from the  previous state.
+					// One from the  current state.
+					// Three points from the  future predicted state.
 						if(previous_size < 2)
 						{
-							double prev_car_x = car_x - cos(car_yaw);
-							double prev_car_y = car_y - sin(car_yaw);
+							double previous_x = car_x - cos(car_yaw);
+							double previous_y = car_y - sin(car_yaw);
 
-							ptsx.push_back(prev_car_x);
-							ptsy.push_back(prev_car_y);
+							pts_x.push_back(previous_x);
+							pts_y.push_back(previous_y);
 
-							ptsx.push_back(car_x);
-							ptsy.push_back(car_y);
+							pts_x.push_back(car_x);
+							pts_y.push_back(car_y);
 
 						}
 						else
 						{
 							// take points from previous points 
 
-							double ref_x_prev = previous_path_x[previous_size-2];
-							double ref_y_prev = previous_path_y[previous_size-2];
+							double reference_x_previous = previous_path_x[previous_size-2];
+							double reference_y_previous = previous_path_y[previous_size-2];
 							
-							ptsx.push_back(ref_x_prev);
-							ptsy.push_back(ref_y_prev);
+							pts_x.push_back(reference_x_previous);
+							pts_y.push_back(reference_y_previous);
 
-							ref_x = previous_path_x[previous_size-1];
-							ref_y = previous_path_y[previous_size -1];
+							reference_x = previous_path_x[previous_size-1];
+							reference_y = previous_path_y[previous_size -1];
 
-							ptsx.push_back(ref_x);
-							ptsy.push_back(ref_y);
+							pts_x.push_back(reference_x);
+							pts_y.push_back(reference_y);
 
-							ref_yaw = atan2(ref_y - ref_y_prev ,  ref_x- ref_x_prev);
+							reference_yaw = atan2(reference_y - reference_y_previous ,  reference_x- reference_x_previous);
 
 						}
 
@@ -394,30 +394,30 @@ else if(ref_vel <49.5)
 						vector<double> XY4= getXY(car_s+60, (2+4*lane), map_waypoints_s, map_waypoints_x, map_waypoints_y);
 						vector<double> XY5= getXY(car_s+90, (2+4*lane), map_waypoints_s, map_waypoints_x, map_waypoints_y);
           	
-						ptsx.push_back(XY3[0]);
-						ptsy.push_back(XY3[1]);
+						pts_x.push_back(XY3[0]);
+						pts_y.push_back(XY3[1]);
 
-						ptsx.push_back(XY4[0]);
-						ptsy.push_back(XY4[1]);
+						pts_x.push_back(XY4[0]);
+						pts_y.push_back(XY4[1]);
 
-						ptsx.push_back(XY5[0]);
-						ptsy.push_back(XY5[1]);
+						pts_x.push_back(XY5[0]);
+						pts_y.push_back(XY5[1]);
 
 						// transforming from global coordinates to vehicle coordinates
-						for(int i=0; i < ptsx.size(); i++)
+						for(int i=0; i < pts_x.size(); i++)
 						{
-							double shift_x = ptsx[i] -  ref_x;
-							double shift_y = ptsy[i] - ref_y;
+							double shift_x = pts_x[i] -  reference_x;
+							double shift_y = pts_y[i] - reference_y;
 
-							ptsx[i] = shift_x * cos(-ref_yaw) - shift_y*sin(-ref_yaw);
-							ptsy[i] = shift_x * sin(-ref_yaw) + shift_y*cos(-ref_yaw);
+							pts_x[i] = shift_x * cos(-reference_yaw) - shift_y*sin(-reference_yaw);
+							pts_y[i] = shift_x * sin(-reference_yaw) + shift_y*cos(-reference_yaw);
  						}
 
 						//create a spline
 						tk:: spline s;
 
 						//pass all the 5 points through spline
-						s.set_points(ptsx,ptsy);
+						s.set_points(pts_x,pts_y);
 
 						//add all the previous points, this is a second set of points containing the path waypoints
 						for(int i=0;i<previous_path_x.size();i++)
@@ -441,10 +441,10 @@ else if(ref_vel <49.5)
 							double x_ref = x_point;
 							double y_ref = y_point;
 
-							x_point = (x_ref * cos(ref_yaw) - y_ref*sin(ref_yaw));
-							y_point = (x_ref * sin(ref_yaw) + y_ref*cos(ref_yaw));
-							x_point += ref_x;
-							y_point += ref_y;
+							x_point = (x_ref * cos(reference_yaw) - y_ref*sin(reference_yaw));
+							y_point = (x_ref * sin(reference_yaw) + y_ref*cos(reference_yaw));
+							x_point += reference_x;
+							y_point += reference_y;
 							next_x_value.push_back(x_point);
 							next_y_value.push_back(y_point);
 						}
