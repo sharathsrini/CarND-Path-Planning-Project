@@ -135,6 +135,58 @@ that's just a guess.
 One last note here: regardless of the IDE used, every submitted project must
 still be compilable with cmake and make./
 
-## How to write a README
-A well written README file can enhance your project and portfolio.  Develop your abilities to create professional README files by completing [this free course](https://www.udacity.com/course/writing-readmes--ud777).
+#  My take on the CarND-Path-Planning
+
+## Path Planning Project
+The goal of this project is to drive a car around a simulated highway including traffic. In all previous projects we just used to drive only our car around the track, but this was a bit different. The simulator tries to inact the actual highway situation and we just need to write our code in such a way that car drives better than we drive!!! As always there are a number of constraints-:
+
+* The car should not exceed the speed limit of 50mph on the highway
+* Lets make sure the car does not exceed a total acceleration :  10 m/s^2
+* Lets make sure the car does not exceed a total jerk : 10 m/s^3
+* The car should  not have collide with any of the other cars while it changes lanes or driving inside a lane.
+* The car should stay on its lane, except for the time when it  changing lanes.
+* If the car ahead is too  slow, then we should be able to change lanes and overtake the other car safely.
+
+## Rubric Points
+
+1. *The Code compiles correctly.*- The code complied successfully. I had used the spline approach for smoothening and fitting a proper spline into the trajectory.
+
+2. *The car is able to drive at least 4.00 miles without incident.* - The car drove around the highway easily. 
+
+3. *The car drives according to the speed limit.*- As I mentioned in Point 2 the car drove without any incidents, and maintaining speed limit for one of the incidents. The car drives at a max speed of 49.5 if there is no slow moving traffic ahead of car, if the car encounters a slow moving traffic, it tries to change the lane. If lane change is successful, then well and good otherwise car will lower its speed and keep moving in the same lane.
+
+4. *Max Acceleration and Jerk are not Exceeded.* - True, the acceleration and jerk were in prescribed limits. If there is slow moving traffic ahead the car's acceleration is reduced by 5mph and immediately from 49 to 18 as it will produce a lot of jerk. Same is the case with the acceleration, it accelerates smoothly by 5mph.
+
+5. *Car does not have collisions.*- There were no collisions, there were one or two incidents where there were collisions while changing lanes, but proper code was then implemented which I will explain in the pipeline.
+
+6. *The car stays in its lane, except for the time between changing lanes.*- The car stays inside the lane, we are just responsible for providing the lane number, the control section is handeled by the simulator.
+
+7. *The car is able to change lanes*- Whenever there is a slow moving traffic the car tries to change the lane and it does it successfully if there are not cars nearby.
+
+8. *There is a reflection on how to generate paths.* Described below.
+
+## Model Documentation
+
+The simulator sends a number of messages like the Car's location, velocity, yaw rate, speed, frenet coordinates and sensor fusion data.  I have used a  spline function, which fits a line to given points in a fairly smooth function.I decided to use spline as it is a well made library which will eventually reduce the computation. After fitting a line, we then feed points along that line back to the simulator.
+
+### Prediction
+
+The data from the sensor fusion and simulator is used to generate the estimate i.e. predict  what the other vehicles are likely to do. The sensor fusion data that gives us the data about the other cars nearby and we will have to predict what they are likely to do. We will change our behaviour on the basis of the Prediction of other cars behaviour
+
+### Behaviour Planning 
+
+
+For behaviour planning the algorithm-:
+
+1. The car estimates for safety  30 m ahead , it actually tries to find other cars in the lane.
+2. If a car is sensed 30 m ahead,  provided it is moving slow , we  will try to switch the lane.
+3. We will check the left lane first, if it is free and has no vehicle ahead  30 m and no vehicle  10 m behind the car. We check for the Behind proximity because while changing lanes, collision can happen with the cars that are moving point to point parallelly.
+4. If the left lane is not available, as in free then it checks to switch to right lane, if it is free and has  no vehicle ahead for 30 m and 10 m behind the car.
+5. If we are left with no option for changing the lane, then we will have to make it stay in the current lane without colliding with the car ahead.
+
+
+### Trajectory Generation 
+
+The trajectory is calculated based on the car 's speed, the speed of  other cars, current lane, intended lane and past points. To make trajectory smoother, we add the  last two points. If there are no previous points then we calculate the estimate of the previous points from the current yaw and  car coordinates. Also the  three points are added in next 30-90 meters with a step size of 30 metres to trajecotry. All these points are transformed to car reference angle.
+
 
