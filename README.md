@@ -103,6 +103,6 @@ For behaviour planning the algorithm-:
 
 ![alt text](https://s3-eu-west-1.amazonaws.com/elasticbeanstalk-eu-west-1-981246043789/wp-content/uploads/2018/03/16111653/block.png)
 
-The trajectory is calculated based on the car 's speed, the speed of  other cars, current lane, intended lane and past points. To make trajectory smoother, we add the  last two points. If there are no previous points then we calculate the estimate of the previous points from the current yaw and  car coordinates. Also the  three points are added in next 30-90 meters with a step size of 30 metres to trajecotry. All these points are transformed to car reference angle.
+In this module, the actual trajectory of the self-driving car is determined. Therefore, the previous planned path is used as first waypoints if it consists more than two points. Otherwise, the stored reference point is used. Moreover, three farther points are added at distances of 50m, 60m and 90m. Next, these list of waypoints is transformed back in local coordinates to be used by the spline library. Again, if there is already a planned path, it is used as starting point for the trajectory. Next, 50 points are equally interpolated in a path of a distance of 30m. This includes the information of the behavior module, so acceleration and decelerations are considered in the distances of two consecutive trajetory points. And last but not least, the points are transformed back in global coordinates.
 
 
