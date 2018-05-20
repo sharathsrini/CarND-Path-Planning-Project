@@ -2,7 +2,7 @@
 Self-Driving Car Engineer Nanodegree Program
  
 
-
+![alt text](https://s3-eu-west-1.amazonaws.com/elasticbeanstalk-eu-west-1-981246043789/wp-content/uploads/2018/03/16110823/car-path-planning.png)
 
 
 ### Simulator.
@@ -142,7 +142,7 @@ still be compilable with cmake and make./
 #  My take on the CarND-Path-Planning
 
 
-./Shem.jpg
+![alt text](https://s3-eu-west-1.amazonaws.com/elasticbeanstalk-eu-west-1-981246043789/wp-content/uploads/2018/03/16105859/Shem.jpg)
 
 ## Path Planning Project
 The goal of this project is to drive a car around a simulated highway including traffic. In all previous projects we just used to drive only our car around the track, but this was a bit different. The simulator tries to inact the actual highway situation and we just need to write our code in such a way that car drives better than we drive!!! As always there are a number of constraints-:
@@ -182,7 +182,7 @@ The data from the sensor fusion and simulator is used to generate the estimate i
 
 ### Behaviour Planning 
 
-./car-parking.png
+![alt text](https://s3-eu-west-1.amazonaws.com/elasticbeanstalk-eu-west-1-981246043789/wp-content/uploads/2018/03/16111923/car-parking.png)
 
 
 For behaviour planning the algorithm-:
@@ -195,6 +195,8 @@ For behaviour planning the algorithm-:
 
 
 ### Trajectory Generation 
+
+![alt text](https://s3-eu-west-1.amazonaws.com/elasticbeanstalk-eu-west-1-981246043789/wp-content/uploads/2018/03/16111653/block.png)
 
 The trajectory is calculated based on the car 's speed, the speed of  other cars, current lane, intended lane and past points. To make trajectory smoother, we add the  last two points. If there are no previous points then we calculate the estimate of the previous points from the current yaw and  car coordinates. Also the  three points are added in next 30-90 meters with a step size of 30 metres to trajecotry. All these points are transformed to car reference angle.
 
