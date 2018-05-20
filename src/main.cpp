@@ -310,7 +310,7 @@ int main() {
             int car_lane = -1;
 
 			//Speed in m/s
-            double car_speed = car_speed * 0.44704;
+            double car_speed_meters = car_speed * 0.44704;
 
 
 
@@ -377,7 +377,7 @@ int main() {
 
             
 
-            //BEHAVIOUR PLANNING 
+            //                         BEHAVIOUR PLANNING 
 
             
             if(lane_change){
@@ -430,7 +430,7 @@ int main() {
                   if(blocked_lane[lane - 1] && blocked_lane[lane + 1]){
 
                     
-                    if(car_speed > v_lane[lane]){
+                    if(car_speed_meters > v_lane[lane]){
                       slow_down(dist_lane[lane]);
                     }
                     
@@ -471,7 +471,7 @@ int main() {
                   if(blocked_lane[lane + 1]){
 
                     
-                    if(car_speed > v_lane[lane]){
+                    if(car_speed_meters > v_lane[lane]){
                       slow_down(dist_lane[lane]);
                     }
                     
@@ -499,7 +499,7 @@ int main() {
                   if(blocked_lane[lane - 1]){
 
                     
-                    if(car_speed > v_lane[lane]){
+                    if(car_speed_meters > v_lane[lane]){
                       slow_down(dist_lane[lane]);
                     }
                     
